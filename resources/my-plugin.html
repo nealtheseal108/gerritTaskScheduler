@@ -1,0 +1,51 @@
+<script>
+  Gerrit.install(plugin => {
+    // This runs when the plugin is loaded in the Gerrit UI
+    plugin.on('change', change => {
+      const panel = document.createElement('div');
+      panel.style.border = "1px solid #ddd";
+      panel.style.padding = "1em";
+      panel.style.marginTop = "1em";
+      panel.style.background = "#f9f9f9";
+
+      // Build the UI
+      panel.innerHTML = `
+        <h3>Task Scheduler: Select Tests</h3>
+        <label><input type="checkbox" name="test" value="test1"> Test 1</label><br>
+        <label><input type="checkbox" name="test" value="test2"> Test 2</label><br>
+        <label><input type="checkbox" name="test" value="test3"> Test 3</label><br>
+        <label><input type="checkbox" name="test" value="test69"> Test 69</label><br><br>
+        <button id="submit-tests">Submit</button>
+        <pre id="output-json" style="margin-top:1em; background:#eee; padding:0.5em;"></pre>
+      `;
+
+      // Handle click event
+      panel.querySelector('#submit-tests').addEventListener('click', () => {
+        const selected = Array.from(panel.querySelectorAll('input[name="test"]:checked'))
+                              .map(cb => cb.value);
+
+        const commitId = change.revisions[change.current_revision].commit.commit;
+
+        const payload = {
+          commit_id: commitId,
+          tests: selected
+        };
+
+        // Show the output JSON
+        panel.querySelector('#output-json').textContent = JSON.stringify(payload, null, 2);
+
+        // Optional: send to your plugin REST endpoint
+        /*
+        plugin.restApi().post('/plugins/my-plugin/schedule-tests', payload).then(response => {
+          console.log('Scheduled successfully:', response);
+        }).catch(err => {
+          console.error('Error scheduling tests:', err);
+        });
+        */
+      });
+
+      // Inject into Gerrit UI
+      plugin.panel().appendChild(panel);
+    });
+  });
+</script>
