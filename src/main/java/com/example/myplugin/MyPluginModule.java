@@ -1,10 +1,10 @@
 package com.example.myplugin;
 
-import com.google.gerrit.extensions.config.FactoryModule;
+import com.google.inject.servlet.ServletModule;
 
-public class MyPluginModule extends FactoryModule {
+public class MyPluginModule extends ServletModule {
   @Override
-  protected void configure() {
-    // You can bind stuff here later, for now leave it empty
+  protected void configureServlets() {
+    serve("/schedule").with(ScheduleServlet.class);
   }
 }
