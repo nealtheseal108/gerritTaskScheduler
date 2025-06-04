@@ -10,6 +10,7 @@ http_archive(
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
+    name = "maven",
     artifacts = [
         "com.google.code.gson:gson:2.8.9",
     ],

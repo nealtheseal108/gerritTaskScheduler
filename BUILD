@@ -9,10 +9,9 @@ gerrit_plugin(
         "Gerrit-PluginName": "my-plugin",
         "Gerrit-Module": "com.example.myplugin.MyPluginModule",
         "Gerrit-ApiType": "PLUGIN",
-        "Gerrit-UiPlugin": "my-plugin.html",  # ✅ COMMA HERE
+        "Gerrit-UiPlugin": "my-plugin.html"
     },
     deps = [
-        "@guice_servlet//jar",
         "@maven//:com_google_code_gson_gson",
     ],
 )
